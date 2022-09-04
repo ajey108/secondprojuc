@@ -12,6 +12,12 @@
 </head>
 
 <body>
+
+
+
+
+
+
     <nav id="navbar">
         <div id="logo">
             <img src="img/uclogo.png" alt="uclap.com">
@@ -22,7 +28,18 @@
             <li class="item"><a href="#blog-section">Blog</a></li>
             <li class="item"><a href="#contact">Contact Us</a></li>
         </ul>
+        <div>
+            <input type="checkbox" class="checkbox" id="chk" />
+            <label class="label" for="chk">
+                <i class="fas fa-moon"></i>
+                <i class="fas fa-sun"></i>
+                <div class="ball"></div>
+            </label>
+        </div>
+
+
     </nav>
+
 
     <section id="home">
         <h1 class="h-primary">Welcome to UrbanClap</h1>
@@ -103,6 +120,14 @@
             Copyright &copy; UrbanServices All rights reserved! Since 1998
         </div>
     </footer>
+    <script>
+                const chk = document.getElementById('chk');
+
+chk.addEventListener('change', () => {
+	document.body.classList.toggle('dark');
+});
+
+    </script>
 </body>
 
 </html>
