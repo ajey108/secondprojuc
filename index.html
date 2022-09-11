@@ -40,6 +40,18 @@
 
     </nav>
 
+    <!-- popup -->
+    <div class="popup">
+        <button id="close">&times;</button>
+        <h2>This website uses cookies!</h2>
+        <p>
+           This website uses cookies to ensure that you get the best expirence on our website. 
+        </p>
+        <a href="#">I Understand</a>
+    </div>
+
+    <!-- pop ending -->
+
 
     <section id="home">
         <h1 class="h-primary">Welcome to UrbanClap</h1>
@@ -126,6 +138,23 @@
 chk.addEventListener('change', () => {
 	document.body.classList.toggle('dark');
 });
+
+window.addEventListener("load", function(){
+    setTimeout(
+        function open(event){
+            document.querySelector(".popup").style.display = "block";
+        },
+        1000
+    )
+});
+
+
+document.querySelector("#close").addEventListener("click", function(){
+    document.querySelector(".popup").style.display = "none";
+});
+
+
+
 
     </script>
 </body>
