@@ -38,13 +38,12 @@
         </div>
 
 
-        <!-- for geo -->
-        <button id="find-me">Find me</button><br />
-        <p id="status"></p>
-        <a id="map-link" target="_blank"></a>
+        <button onclick="geolocation()">Geolocation</button>
+        <p id="out"></p>
+        <p id="location"></p>
+        <p id="weather"></p>
     
-    
-       
+
 
 
     </nav>
@@ -54,7 +53,7 @@
         <button id="close">&times;</button>
         <h2>This website uses cookies!</h2>
         <p>
-           This website uses cookies to ensure that you get the best expirence on our website. 
+            This website uses cookies to ensure that you get the best expirence on our website.
         </p>
         <a href="#">I Understand</a>
     </div>
@@ -62,6 +61,9 @@
     <!-- pop ending -->
 
 
+    <!-- weather api -->
+
+  
     <section id="home">
         <h1 class="h-primary">Welcome to UrbanClap</h1>
         <p>Get services at your location in just a minute. </p>
@@ -80,16 +82,16 @@
                 <img src="img/pest controls.jpg" alt="">
                 <h2 class="h-secondary center">Pest control</h2>
                 <p class="center">
-                   This is for pest control services</p>
+                    This is for pest control services</p>
             </div>
             <div class="box">
                 <img src="img/carpenter-4015109__340.jpg" alt="">
                 <h2 class="h-secondary center">HomeRepairing</h2>
                 <p class="center">Get fixed any house Hold items.
-                  </p>
+                </p>
             </div>
 
-        
+
         </div>
     </section>
     <section id="client-section">
@@ -101,7 +103,7 @@
             <div class="client-item">
                 <img src="img/pestcontrol.jpg" alt="Our Client">
             </div>
-          
+
             <div class="client-item">
                 <img src="img/electrologo.jpg" alt="Our Client">
             </div>
@@ -141,59 +143,63 @@
             Copyright &copy; UrbanServices All rights reserved! Since 1998
         </div>
     </footer>
+
+
+
+
     <script>
-                const chk = document.getElementById('chk');
+        const chk = document.getElementById('chk');
 
-chk.addEventListener('change', () => {
-	document.body.classList.toggle('dark');
-});
+        chk.addEventListener('change', () => {
+            document.body.classList.toggle('dark');
+        });
 
-window.addEventListener("load", function(){
-    setTimeout(
-        function open(event){
-            document.querySelector(".popup").style.display = "block";
-        },
-        1000
-    )
-});
+        window.addEventListener("load", function () {
+            setTimeout(
+                function open(event) {
+                    document.querySelector(".popup").style.display = "block";
+                },
+                1000
+            )
+        });
 
 
-document.querySelector("#close").addEventListener("click", function(){
-    document.querySelector(".popup").style.display = "none";
-});
+        document.querySelector("#close").addEventListener("click", function () {
+            document.querySelector(".popup").style.display = "none";
+        });
 
-// locationapi
-function geoFindMe() {
 
-const status = document.querySelector('#status');
-const mapLink = document.querySelector('#map-link');
 
-mapLink.href = '';
-mapLink.textContent = '';
+        // weatherapi
 
-function success(position) {
-  const latitude  = position.coords.latitude;
-  const longitude = position.coords.longitude;
+        let x = document.getElementById('out');
+        let y = document.getElementById('weather');
+        let z = document.getElementById('location');
+        function geolocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition)
+            } else {
+                x.innerText = "Geo Not Supported"
+            }
+        }
 
-  status.textContent = '';
-  mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
-  mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
-}
+        function showPosition(data) {
+            console.log(data)
+            let lat = data.coords.latitude;
+            let long = data.coords.longitude;
+            x.innerText = `Lat is ${lat} & long is ${long}`;
+            const url = `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${long}&mode=json&units=metric&cnt=5&appid=fbf712a5a83d7305c3cda4ca8fe7ef29`;
+            //api calling
+            fetch(url, { method: 'GET' })
+                //return promise
+                .then((res) => res.json())
+                // resolve the promise
+                .then((data) => {
+                    y.innerText = `Your City is ${data.city.name}`
+                    z.innerText = `Temp of day is ${data.list[0].temp.day} °C`
+                })
 
-function error() {
-  status.textContent = 'failed to accsess your location,try again';
-}
-
-if (!navigator.geolocation) {
-  status.textContent = 'Geolocation is not supported by your browser';
-} else {
-  status.textContent = 'Locating…';
-  navigator.geolocation.getCurrentPosition(success, error);
-}
-
-}
-
-document.querySelector('#find-me').addEventListener('click', geoFindMe);
+        }
 
 
     </script>
